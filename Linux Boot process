@@ -1,12 +1,7 @@
-# Linux and Windows Boot Process
-
----
-
 # What is Booting?
 
 Booting is the process of starting a computer and loading the operating system into memory (RAM) so that users can interact with it.
-
-```text
+```
 Power ON
 ↓
 Hardware Initialization
