@@ -5,12 +5,11 @@
 Booting is the process of starting a computer and loading the operating system into memory so that users can interact with it. Every time we power on a system, a sequence of steps is executed before the login screen appears.
 
 ---
-
-# Linux Boot Process
+## Linux Boot Process
 
 The Linux boot process consists of several stages, beginning from powering on the machine and ending with the user login screen.
 
-## 1. Power On
+### 1. Power On
 
 When the power button is pressed:
 
@@ -20,23 +19,21 @@ When the power button is pressed:
 
 At this stage, the processor begins execution from firmware stored on the motherboard.
 
----
-
-## 2. BIOS or UEFI Initialization
+### 2. BIOS or UEFI Initialization
 
 The motherboard firmware takes control.
 
-### BIOS (Basic Input Output System)
+#### BIOS (Basic Input Output System)
 
 * Used in older systems.
 * Performs hardware initialization.
 
-### UEFI (Unified Extensible Firmware Interface)
+#### UEFI (Unified Extensible Firmware Interface)
 
 * Modern replacement for BIOS.
 * Supports larger disks and faster boot times.
 
-### Responsibilities of BIOS/UEFI
+#### Responsibilities of BIOS/UEFI
 
 * Detect CPU
 * Detect RAM
@@ -45,13 +42,11 @@ The motherboard firmware takes control.
 * Determine boot order
 * Perform POST (Power-On Self-Test)
 
----
-
-## 3. POST (Power-On Self-Test)
+### 3. POST (Power-On Self-Test)
 
 POST verifies whether the hardware components are functioning correctly.
 
-### Components Checked
+#### Components Checked
 
 * Processor (CPU)
 * Memory (RAM)
@@ -62,13 +57,11 @@ POST verifies whether the hardware components are functioning correctly.
 
 If a critical component fails, the boot process stops and an error message or beep code is generated.
 
----
-
-## 4. Selecting the Boot Device
+### 4. Selecting the Boot Device
 
 After POST, BIOS/UEFI searches for a bootable device based on the configured boot order.
 
-Example:
+Example boot order:
 
 1. SSD
 2. HDD
@@ -77,13 +70,11 @@ Example:
 
 Once a bootable device is found, control is transferred to it.
 
----
+### 5. Boot Loader (GRUB)
 
-## 5. Boot Loader (GRUB)
+Most Linux distributions use **GRUB (GNU Grand Unified Bootloader)**.
 
-Most Linux distributions use GRUB (GNU Grand Unified Bootloader).
-
-### Responsibilities of GRUB
+#### Responsibilities of GRUB
 
 * Display boot menu.
 * Support multiple operating systems.
@@ -96,17 +87,13 @@ Configuration file:
 /boot/grub/grub.cfg
 ```
 
-Example menu:
+Typical menu entries:
 
 * Ubuntu
 * Advanced Ubuntu Options
 * Windows
 
----
-
-## 6. Loading the Linux Kernel
-
-The kernel is the core component of Linux.
+### 6. Loading the Linux Kernel
 
 Kernel image location:
 
@@ -114,7 +101,7 @@ Kernel image location:
 /boot/vmlinuz
 ```
 
-### Responsibilities of the Kernel
+#### Responsibilities of the Kernel
 
 * Memory management
 * Process management
@@ -124,11 +111,9 @@ Kernel image location:
 
 The kernel acts as an interface between applications and hardware.
 
----
+### 7. Loading initramfs
 
-## 7. Loading initramfs
-
-Before mounting the actual root filesystem, Linux loads a temporary filesystem called initramfs.
+Before mounting the actual root filesystem, Linux loads a temporary filesystem called **initramfs**.
 
 Common file:
 
@@ -136,15 +121,13 @@ Common file:
 /boot/initrd.img
 ```
 
-### Purpose of initramfs
+#### Purpose of initramfs
 
 * Load essential drivers.
 * Locate the root filesystem.
 * Prepare the system for normal operation.
 
----
-
-## 8. Mounting the Root Filesystem
+### 8. Mounting the Root Filesystem
 
 The kernel mounts the root filesystem:
 
@@ -152,43 +135,31 @@ The kernel mounts the root filesystem:
 /
 ```
 
-Common filesystem types include:
+Common filesystem types:
 
 * ext4
 * xfs
 * btrfs
 
-Once mounted, Linux directories become available:
+Important Linux directories:
 
-* /bin
-* /etc
-* /home
-* /var
-* /usr
+* `/bin`
+* `/etc`
+* `/home`
+* `/var`
+* `/usr`
 
----
-
-## 9. Starting systemd (PID 1)
+### 9. Starting systemd (PID 1)
 
 The kernel starts the first user-space process.
 
-Process ID:
-
-```text
-PID 1
-```
-
 Modern Linux systems use:
 
-```text
-systemd
-```
+* `systemd`
 
-Older systems used:
+Older Linux systems used:
 
-```text
-init
-```
+* `init`
 
 Verify PID 1:
 
@@ -196,58 +167,48 @@ Verify PID 1:
 ps -p 1
 ```
 
----
+### 10. Starting System Services
 
-## 10. Starting System Services
+`systemd` starts background services required for system operation.
 
-systemd starts background services required for system operation.
-
-Examples include:
-
-### Networking
+#### Networking
 
 * NetworkManager
 
-### Remote Access
+#### Remote Access
 
 * sshd
 
-### Scheduling
+#### Scheduling
 
 * crond
 
-### Logging
+#### Logging
 
 * rsyslog
 
-### Containers
+#### Containers
 
 * docker.service
 
-### Web Servers
+#### Web Servers
 
 * nginx
 * apache
 
----
+### 11. Reaching the Target
 
-## 11. Reaching the Target
+#### multi-user.target
 
-systemd reaches a predefined target.
+Used for servers without a graphical interface.
 
-### multi-user.target
-
-Used for servers without graphical interface.
-
-### graphical.target
+#### graphical.target
 
 Used for desktop systems with GUI.
 
----
+### 12. User Login
 
-## 12. User Login
-
-Finally, the login screen appears.
+The login screen appears.
 
 The user enters:
 
@@ -264,7 +225,7 @@ The system is now ready for use.
 
 ---
 
-# Linux Boot Process Flow
+## Linux Boot Process Flow
 
 ```text
 Power ON
@@ -292,68 +253,50 @@ Login Screen
 
 ---
 
-# Windows Boot Process
+## Windows Boot Process
 
 Windows follows a similar process with different components.
 
----
-
-## 1. Power On
+### 1. Power On
 
 The CPU begins execution after the system receives power.
 
----
-
-## 2. BIOS or UEFI Initialization
+### 2. BIOS or UEFI Initialization
 
 Hardware is initialized and POST is performed.
 
----
-
-## 3. Windows Boot Manager
-
-Windows Boot Manager is responsible for loading Windows.
+### 3. Windows Boot Manager
 
 Files involved:
 
-```text
-bootmgr
-bootmgfw.efi
-```
+* `bootmgr`
+* `bootmgfw.efi`
 
-### Responsibilities
+#### Responsibilities
 
 * Read Boot Configuration Data (BCD).
 * Determine which operating system to load.
 
----
-
-## 4. Boot Configuration Data (BCD)
+### 4. Boot Configuration Data (BCD)
 
 BCD stores:
 
-* Installed Windows versions.
-* Recovery settings.
-* Boot parameters.
+* Installed Windows versions
+* Recovery settings
+* Boot parameters
 
 It is conceptually similar to GRUB configuration in Linux.
 
----
+### 5. winload.exe
 
-## 5. winload.exe
+The Windows loader loads:
 
-The Windows loader starts loading the operating system.
-
-It loads:
-
-* ntoskrnl.exe (Windows kernel)
+* `ntoskrnl.exe` (Windows kernel)
 * Hardware Abstraction Layer (HAL)
 * Device drivers
 * Registry
 
----
-
-## 6. Kernel Initialization
+### 6. Kernel Initialization
 
 The Windows kernel initializes:
 
@@ -362,55 +305,39 @@ The Windows kernel initializes:
 * Device Manager
 * Process Manager
 
----
+### 7. Session Manager (smss.exe)
 
-## 7. Session Manager (smss.exe)
+Creates important processes such as:
 
-Session Manager creates important processes such as:
+* `csrss.exe`
+* `wininit.exe`
 
-* csrss.exe
-* wininit.exe
-
-These are required for normal system operation.
-
----
-
-## 8. Service Control Manager
+### 8. Service Control Manager
 
 Process:
 
-```text
-services.exe
-```
+* `services.exe`
 
-Starts essential services including:
+Starts:
 
 * Networking
 * Event Logs
 * Windows Defender
 * Windows Update
 
----
-
-## 9. Login Process
+### 9. Login Process
 
 Process:
 
-```text
-winlogon.exe
-```
+* `winlogon.exe`
 
 Displays the login screen and authenticates users.
 
----
-
-## 10. Explorer Process
+### 10. Explorer Process
 
 Process:
 
-```text
-explorer.exe
-```
+* `explorer.exe`
 
 Loads:
 
@@ -422,7 +349,7 @@ The Windows environment is now ready.
 
 ---
 
-# Windows Boot Process Flow
+## Windows Boot Process Flow
 
 ```text
 Power ON
@@ -450,7 +377,7 @@ explorer.exe
 
 ---
 
-# Linux vs Windows Boot Process
+## Linux vs Windows Boot Process
 
 | Linux     | Windows              |
 | --------- | -------------------- |
@@ -463,7 +390,7 @@ explorer.exe
 
 ---
 
-# Important Linux Commands
+## Important Linux Commands
 
 ### Check Kernel Version
 
@@ -497,22 +424,20 @@ journalctl -b
 
 ---
 
-# Interview Summary
+## Interview Summary
 
-## Linux Boot Process
+### Linux Boot Process
 
 **Power ON → BIOS/UEFI → POST → Boot Device → GRUB → Kernel → initramfs → Root Filesystem → systemd → Services → Login Screen**
 
-### Interview Explanation
+**Interview Answer:**
 
-> When a Linux system powers on, BIOS or UEFI initializes the hardware and performs POST. It then transfers control to GRUB, which loads the Linux kernel into memory. The kernel loads initramfs, mounts the root filesystem, and starts systemd (PID 1). systemd launches required services and finally presents the login screen.
+BIOS or UEFI initializes the hardware and performs POST. GRUB loads the Linux kernel into memory. The kernel loads initramfs, mounts the root filesystem, starts `systemd` (PID 1), which launches services and finally presents the login screen.
 
----
-
-## Windows Boot Process
+### Windows Boot Process
 
 **Power ON → BIOS/UEFI → POST → Windows Boot Manager → BCD → winload.exe → ntoskrnl.exe → Session Manager → Services → Login Screen → explorer.exe**
 
-### Interview Explanation
+**Interview Answer:**
 
-> In Windows, BIOS or UEFI initializes the hardware and performs POST. Windows Boot Manager reads BCD and starts winload.exe, which loads the Windows kernel. Session Manager and Service Control Manager initialize the system and start services. Finally, explorer.exe loads the desktop environment.
+BIOS or UEFI initializes the hardware and performs POST. Windows Boot Manager reads BCD and starts `winload.exe`, which loads the Windows kernel. Session Manager and Service Control Manager initialize the system and start services. Finally, `explorer.exe` loads the desktop environment.
