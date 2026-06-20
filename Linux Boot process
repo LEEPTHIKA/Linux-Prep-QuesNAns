@@ -1,0 +1,590 @@
+# Linux and Windows Boot Process
+
+---
+
+# What is Booting?
+
+Booting is the process of starting a computer and loading the operating system into memory (RAM) so that users can interact with it.
+
+```text
+Power ON
+↓
+Hardware Initialization
+↓
+OS Loaded into Memory
+↓
+Login Screen
+↓
+User Starts Working
+```
+
+---
+
+# Linux Boot Process
+
+## Step 1: Power ON
+
+When the power button is pressed:
+
+- CPU starts execution.
+- RAM is empty.
+- Hard disk contains Linux, but CPU doesn't know where Linux is located.
+
+CPU begins executing instructions stored in ROM.
+
+---
+
+## Step 2: BIOS or UEFI
+
+### BIOS
+Basic Input Output System (Older systems)
+
+### UEFI
+Unified Extensible Firmware Interface (Modern systems)
+
+Responsibilities:
+
+- Initialize hardware
+- Detect RAM
+- Detect CPU
+- Detect Storage devices
+- Perform POST
+
+---
+
+## Step 3: POST (Power-On Self Test)
+
+Hardware components are verified:
+
+- RAM
+- CPU
+- Keyboard
+- Mouse
+- Disk
+- Graphics card
+
+If hardware fails, boot process stops.
+
+---
+
+## Step 4: Locate Boot Device
+
+BIOS/UEFI checks boot order:
+
+```text
+1. SSD
+2. HDD
+3. USB
+4. Network PXE
+```
+
+Control is transferred to the boot device.
+
+---
+
+## Step 5: Boot Loader (GRUB)
+
+Most Linux distributions use:
+
+### GRUB (GNU Grand Unified Bootloader)
+
+Responsibilities:
+
+- Display boot menu
+- Support multiple operating systems
+- Allow kernel selection
+- Load Linux kernel into memory
+
+Configuration file:
+
+```bash
+/boot/grub/grub.cfg
+```
+
+---
+
+## Step 6: Load Linux Kernel
+
+Kernel file:
+
+```bash
+/boot/vmlinuz
+```
+
+Kernel initializes:
+
+- Memory management
+- Process management
+- CPU scheduling
+- Device drivers
+
+Kernel acts as an interface between hardware and software.
+
+---
+
+## Step 7: initramfs
+
+Temporary root filesystem used to:
+
+- Load drivers
+- Locate actual root filesystem
+- Mount root partition
+
+Files:
+
+```bash
+/boot/initrd.img
+```
+
+or
+
+```bash
+initramfs.img
+```
+
+---
+
+## Step 8: Mount Root Filesystem
+
+Root filesystem:
+
+```bash
+/
+```
+
+Common filesystem types:
+
+- ext4
+- xfs
+- btrfs
+
+Linux directory structure becomes available:
+
+```text
+/
+├── bin
+├── etc
+├── home
+├── var
+└── usr
+```
+
+---
+
+## Step 9: Start PID 1
+
+First process started by the kernel:
+
+```text
+PID = 1
+```
+
+Modern Linux:
+
+```text
+systemd
+```
+
+Older Linux:
+
+```text
+init
+```
+
+Verify:
+
+```bash
+ps -p 1
+```
+
+---
+
+## Step 10: systemd Starts Services
+
+Examples:
+
+### Network
+
+```text
+NetworkManager
+```
+
+### SSH
+
+```text
+sshd
+```
+
+### Cron
+
+```text
+crond
+```
+
+### Logging
+
+```text
+rsyslog
+```
+
+### Docker
+
+```text
+docker.service
+```
+
+### Web Servers
+
+```text
+nginx
+apache
+```
+
+---
+
+## Step 11: Target Reached
+
+Examples:
+
+### multi-user.target
+
+Server mode
+
+### graphical.target
+
+Desktop mode
+
+---
+
+## Step 12: Login Prompt
+
+User enters:
+
+```text
+username/password
+```
+
+Shell starts:
+
+```text
+bash
+```
+
+System becomes ready for use.
+
+---
+
+# Linux Boot Process Diagram
+
+```text
+Power ON
+    ↓
+BIOS/UEFI
+    ↓
+POST
+    ↓
+Boot Device
+    ↓
+GRUB
+    ↓
+Kernel
+    ↓
+initramfs
+    ↓
+Root Filesystem
+    ↓
+systemd (PID 1)
+    ↓
+Services
+    ↓
+Login Screen
+```
+
+---
+
+# Windows Boot Process
+
+---
+
+## Step 1: Power ON
+
+Same as Linux.
+
+---
+
+## Step 2: BIOS/UEFI
+
+Performs hardware initialization and POST.
+
+---
+
+## Step 3: Windows Boot Manager
+
+Files:
+
+```text
+bootmgr
+```
+
+or
+
+```text
+bootmgfw.efi
+```
+
+Responsibilities:
+
+- Read Boot Configuration Data (BCD)
+- Select operating system
+
+---
+
+## Step 4: Boot Configuration Data (BCD)
+
+Stores:
+
+- Windows versions
+- Recovery options
+- Boot settings
+
+Equivalent to GRUB configuration in Linux.
+
+---
+
+## Step 5: winload.exe
+
+Loads:
+
+### Windows Kernel
+
+```text
+ntoskrnl.exe
+```
+
+Also loads:
+
+- HAL (Hardware Abstraction Layer)
+- Drivers
+- Registry
+
+---
+
+## Step 6: Kernel Initialization
+
+Kernel initializes:
+
+- Memory manager
+- Scheduler
+- Process manager
+- Device manager
+
+---
+
+## Step 7: Session Manager
+
+Process:
+
+```text
+smss.exe
+```
+
+Creates:
+
+```text
+csrss.exe
+wininit.exe
+```
+
+---
+
+## Step 8: Service Control Manager
+
+Process:
+
+```text
+services.exe
+```
+
+Starts:
+
+- Networking
+- Event logs
+- Windows Defender
+- Update services
+
+---
+
+## Step 9: Login Process
+
+Process:
+
+```text
+winlogon.exe
+```
+
+Displays:
+
+```text
+Ctrl + Alt + Del
+```
+
+or login screen.
+
+---
+
+## Step 10: Explorer Starts
+
+Process:
+
+```text
+explorer.exe
+```
+
+Loads:
+
+- Desktop
+- Start Menu
+- Taskbar
+
+System becomes ready.
+
+---
+
+# Windows Boot Process Diagram
+
+```text
+Power ON
+    ↓
+BIOS/UEFI
+    ↓
+POST
+    ↓
+Boot Manager
+    ↓
+BCD
+    ↓
+winload.exe
+    ↓
+ntoskrnl.exe
+    ↓
+smss.exe
+    ↓
+services.exe
+    ↓
+winlogon.exe
+    ↓
+explorer.exe
+```
+
+---
+
+# Linux vs Windows Boot Process
+
+| Linux | Windows |
+|---------|---------|
+| GRUB | Boot Manager |
+| Kernel | ntoskrnl.exe |
+| systemd | services.exe |
+| initramfs | winload.exe |
+| PID 1 | Session Manager |
+| Targets | Explorer/Desktop |
+
+---
+
+# Useful Linux Commands
+
+### View Kernel Version
+
+```bash
+uname -r
+```
+
+### View PID 1
+
+```bash
+ps -p 1
+```
+
+### Boot Time Analysis
+
+```bash
+systemd-analyze
+```
+
+### List Services
+
+```bash
+systemctl list-units --type=service
+```
+
+### View Boot Logs
+
+```bash
+journalctl -b
+```
+
+---
+
+# Interview Summary
+
+## Linux Boot Process
+
+```text
+Power ON
+↓
+BIOS/UEFI
+↓
+POST
+↓
+Boot Device
+↓
+GRUB
+↓
+Kernel
+↓
+initramfs
+↓
+Root Filesystem
+↓
+systemd (PID 1)
+↓
+Services
+↓
+Login Screen
+```
+
+### Interview Answer
+
+> BIOS/UEFI initializes hardware and performs POST. GRUB loads the Linux kernel into memory. The kernel loads initramfs, mounts the root filesystem, starts systemd (PID 1), which launches services and presents the login screen.
+
+---
+
+## Windows Boot Process
+
+```text
+Power ON
+↓
+BIOS/UEFI
+↓
+POST
+↓
+Windows Boot Manager
+↓
+BCD
+↓
+winload.exe
+↓
+ntoskrnl.exe
+↓
+smss.exe
+↓
+services.exe
+↓
+winlogon.exe
+↓
+explorer.exe
+```
+
+### Interview Answer
+
+> BIOS/UEFI initializes hardware and performs POST. Windows Boot Manager reads BCD and starts winload.exe, which loads ntoskrnl.exe. Session Manager and Service Control Manager start system services, and finally explorer.exe loads the desktop environment.
